@@ -1,0 +1,22 @@
+{
+	"name": "net-passport",
+	"version": "0.0.2",
+	"description": "Easily create OAuth2 keys in one line of code",
+	"main": "NetPassportCreateKeys.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"OAuth2",
+		"passport",
+		"authentication",
+		"auth",
+		"express"
+	],
+	"homepage": "https://netpassport.io",
+	"repository": {
+		"url": "https://github.com/orenz/net-passport"
+	},
+	"author": "Yaron Lerner",
+	"license": "MIT"
+}
