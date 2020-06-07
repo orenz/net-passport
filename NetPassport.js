@@ -50,7 +50,6 @@ class NetPassport {
   }
 
   passportAuth(action) {
-    debugger;
     if (action === "INIT_AUTH") {
       return (req, res, next) =>
         passport.authenticate("net-passport")(req, res, next);
