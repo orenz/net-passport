@@ -2,8 +2,8 @@
  * Module dependencies.
  */
 var util = require("util"),
-	OAuth2Strategy = require("passport-oauth2"),
-	InternalOAuthError = require("passport-oauth2").InternalOAuthError;
+  OAuth2Strategy = require("passport-oauth2"),
+  InternalOAuthError = require("passport-oauth2").InternalOAuthError;
 
 /**
  * `Strategy` constructor.
@@ -40,13 +40,15 @@ var util = require("util"),
  * @api public
  */
 function Strategy(options, verify) {
-	options = options || {};
-	options.authorizationURL = options.authorizationURL || "https://netpassport.io/oauth/authorize";
-	options.tokenURL = options.tokenURL || "https://netpassport.io/oauth/token";
-	this.profileURL = "https://netpassport.io/oauth/users/profile";
+  options = options || {};
+  options.authorizationURL =
+    options.authorizationURL || "https://dev.netpassport.io/oauth/authorize";
+  options.tokenURL =
+    options.tokenURL || "https://dev.netpassport.io/oauth/token";
+  this.profileURL = "https://dev.netpassport.io/oauth/users/profile";
 
-	OAuth2Strategy.call(this, options, verify);
-	this.name = "net-passport";
+  OAuth2Strategy.call(this, options, verify);
+  this.name = "net-passport";
 }
 
 /**
@@ -68,32 +70,35 @@ util.inherits(Strategy, OAuth2Strategy);
  * @param {Function} done
  * @api protected
  */
-Strategy.prototype.userProfile = function(accessToken, done) {
-	this._oauth2.get(this.profileURL, accessToken, (err, body, res) => {
-		if (err) {
-			return done(new InternalOAuthError("failed to fetch user profile", err));
-		}
+Strategy.prototype.userProfile = function (accessToken, done) {
+  this._oauth2.get(this.profileURL, accessToken, (err, body, res) => {
+    if (err) {
+      return done(new InternalOAuthError("failed to fetch user profile", err));
+    }
 
-		try {
-			const json = JSON.parse(body);
-			const profile = { provider: this.name };
-			profile.id = json.id;
-			if (json.full_name) {
-				profile.full_name = json.full_name;
-				profile.name = { familyName: json.last_name, givenName: json.first_name };
-			}
-			if (json.email) {
-				profile.email = json.email;
-			}
-			profile.photo = json.photo;
-			profile._raw = body;
-			profile._json = json;
+    try {
+      const json = JSON.parse(body);
+      const profile = { provider: this.name };
+      profile.id = json.id;
+      if (json.full_name) {
+        profile.full_name = json.full_name;
+        profile.name = {
+          familyName: json.last_name,
+          givenName: json.first_name,
+        };
+      }
+      if (json.username) {
+        profile.username = json.username;
+      }
+      profile.photo = json.photo;
+      profile._raw = body;
+      profile._json = json;
 
-			done(null, profile);
-		} catch (e) {
-			done(e);
-		}
-	});
+      done(null, profile);
+    } catch (e) {
+      done(e);
+    }
+  });
 };
 
 /**
@@ -104,20 +109,16 @@ Strategy.prototype.userProfile = function(accessToken, done) {
  * @return {object}
  * @access protected
  */
-Strategy.prototype.authorizationParams = function(options) {
-	const params = {};
-	// if (options.accessType) {
-	// 	params["access_type"] = options.accessType;
-	// }
-	// if (options.state) {
-	// }
-	params["state"] =
-		options.state ||
-		Math.random()
-			.toString(36)
-			.substring(7);
+Strategy.prototype.authorizationParams = function (options) {
+  const params = {};
+  // if (options.accessType) {
+  // 	params["access_type"] = options.accessType;
+  // }
+  // if (options.state) {
+  // }
+  params["state"] = options.state || Math.random().toString(36).substring(7);
 
-	return params;
+  return params;
 };
 
 /**
