@@ -21,16 +21,21 @@ const { NetPassport } = require("net-passport");
 // Create an object with the relevant parameters
 const params = {
   netPassportID: 112233,  // **required** your NetPassport id
-  initURI: "localhost:3000", // **required** your base auth uri, you can save it in an .env file and use it anywhere
+  initURI: "/", // **required** your base auth path
+  redirectUri: "/auth/callback", // **required** callback auth path so NetPassport could recieve authentication callback
   successRedirect: "/success", // **required** a success relative path in case user authenticated successfully
   failureRedirect: "/failed", // ***required** a failed relative path for failed authentication
-  redirectUri: "/auth/callback" // optional path so NetPassport could recieve authentication callback
 }
 
 // You can choose one private key option
 const pk = {
   privateKey: fs.readFileSync(pathToPrivateKey, { encoding: "utf-8" }) // client privateKey file encoded in utf-8
-  pathToPrivateKey: path.join(__dirname, ssl, "myPrivateKey.pem") // optional, instead of privateKey as file, send the path to your pk
+}
+
+// OR
+
+const pk = {
+  privateKeyPath: path.join(__dirname, ssl, "myPrivateKey.pem") // optional, instead of privateKey as file, send the path to your pk
 }
 
 // Use NetPassport in a top level middleware
