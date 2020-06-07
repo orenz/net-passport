@@ -1,6 +1,5 @@
-const fs = require("fs");
 const axios = require("axios").default;
-const { sign, verify } = require("jsonwebtoken");
+const { sign } = require("jsonwebtoken");
 
 class Auth {
   constructor() {
@@ -8,10 +7,11 @@ class Auth {
   }
 
   sign(message, privateKey) {
+    if (typeof privateKey === "object") {
+      const path = privateKey.privateKeyLocation;
+      privateKey = require("fs").readFileSync(path, "utf-8");
+    }
     try {
-      // if (pathToPrivateKey) {
-      //   privateKey = fs.readFileSync(pathToPrivateKey, { encoding: "utf-8" });
-      // }
       const signature = sign(message, privateKey, {
         algorithm: "PS256",
       });
