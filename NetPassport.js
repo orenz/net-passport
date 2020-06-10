@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+require("dotenv").config();
 const axios = require("axios").default;
 const passport = require("passport");
 const auth = require("./NetPassportAuth");
@@ -8,7 +9,7 @@ class NetPassport {
   constructor() {
     this.authenticate = this.authenticate.bind(this);
     this.HAS_INITIATED = false;
-    this.URL = "https://dev.netpassport.io/generateAppKeys/serverGen";
+    this.URL = process.env.GENERATE_KEYS;
   }
 
   authenticate(privateKey, message) {
@@ -83,10 +84,10 @@ class NetPassport {
   }
 
   static _getFullURI(req, message) {
-    message.initUri =
-      message.initUri.slice(-1) === "/"
-        ? message.initUri
-        : `${message.initUri}/`;
+    // message.initUri =
+    //   message.initUri.slice(-1) === "/"
+    //     ? message.initUri
+    //     : `${message.initUri}/`;
     message.redirectUri =
       message.redirectUri.slice(-1) === "/"
         ? message.redirectUri

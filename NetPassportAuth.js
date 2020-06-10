@@ -3,7 +3,8 @@ const { sign } = require("jsonwebtoken");
 
 class Auth {
   constructor() {
-    this.URL = "https://dev.netpassport.io/signature/verify";
+    this.signUrl = process.env.SIGN_URL;
+    this.verifySigUrl = process.env.VERIFY_SIG;
   }
 
   sign(message, privateKey) {
@@ -23,7 +24,10 @@ class Auth {
 
   async verify(message, signature) {
     try {
-      const { data } = await axios.post(this.URL, { message, signature });
+      const { data } = await axios.post(this.verifySigUrl, {
+        message,
+        signature,
+      });
       return data;
     } catch (error) {
       console.error(error.message);
