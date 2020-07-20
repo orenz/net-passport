@@ -6,6 +6,7 @@ class Auth {
   constructor() {
     this._signUrl = env.SIGN_URL;
     this._verifySigUrl = env.VERIFY_SIG;
+    this.verify = this.verify.bind(this);
   }
 
   sign(message, privateKey) {

@@ -72,15 +72,16 @@ const message = {
   myData: "Hi there"
 };
 
-// Pass in two parameters that includes private key or path to your private key and your object message (as mentioned above)
-const signature = netPassport.sign(pk, message);
+// Pass in two parameters that includes your object message (as mentioned above) and a private key or path to your private key
+const signature = netPassport.sign(message, pk);
 ```
 
 #### Verify data
 
 ```javascript
 // Pass in two parameters that includes your original object message and the hashed signature of the message
-netPassport.verify(message, signature);
+netPassport.verify(message, signature)
+  .then(verifiedMessage => verifiedMessage);
 ```
 
 ## License
