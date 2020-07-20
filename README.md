@@ -25,7 +25,7 @@ const message = {
   redirectUri: "/auth/callback", // **required** callback auth path so NetPassport could recieve authentication callback
   successRedirect: "/success", // **required** a success relative path in case user authenticated successfully
   failureRedirect: "/failed", // ***required** a failed relative path for failed authentication
-  appName: "myAwesomeApp" // Optional - application name 
+  appName: "myAwesomeApp", // Optional - application name 
 };
 
 ```
@@ -72,14 +72,14 @@ app.get("/failed", (req, res) => {
 
 ```javascript
 // Pass in two parameters that includes private key or path to your private key and your object message (as mentioned above)
-netPassport.sign(pk, message)
+const signature = netPassport.sign(pk, message);
 ```
 
 #### Verify data
 
 ```javascript
 // Pass in two parameters that includes your original object message and the hashed signature of the message
-netPassport.verify(message, signature)
+netPassport.verify(message, signature);
 ```
 
 ## License
