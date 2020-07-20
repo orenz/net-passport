@@ -4,6 +4,7 @@
 var util = require("util"),
   OAuth2Strategy = require("passport-oauth2"),
   InternalOAuthError = require("passport-oauth2").InternalOAuthError;
+const env = require("./config.json");
 
 /**
  * `Strategy` constructor.
@@ -41,10 +42,9 @@ var util = require("util"),
  */
 function Strategy(options, verify) {
   options = options || {};
-  options.authorizationURL =
-    options.authorizationURL || process.env.AUTHORIZATION_URL;
-  options.tokenURL = options.tokenURL || process.env.TOKEN_URL;
-  this.profileURL = process.env.PROFILE_URL;
+  options.authorizationURL = options.authorizationURL || env.AUTHORIZATION_URL;
+  options.tokenURL = options.tokenURL || env.TOKEN_URL;
+  this.profileURL = env.PROFILE_URL;
 
   OAuth2Strategy.call(this, options, verify);
   this.name = "net-passport";

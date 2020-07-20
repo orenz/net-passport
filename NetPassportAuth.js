@@ -1,10 +1,11 @@
 const axios = require("axios").default;
 const { sign } = require("jsonwebtoken");
+const env = require("./config.json");
 
 class Auth {
   constructor() {
-    this.signUrl = process.env.SIGN_URL;
-    this.verifySigUrl = process.env.VERIFY_SIG;
+    this.signUrl = env.SIGN_URL;
+    this.verifySigUrl = env.VERIFY_SIG;
   }
 
   sign(message, privateKey) {

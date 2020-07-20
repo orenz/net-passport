@@ -1,15 +1,15 @@
 /* eslint-disable no-underscore-dangle */
-require("dotenv").config();
 const axios = require("axios").default;
 const passport = require("passport");
 const auth = require("./NetPassportAuth");
 const NetPassportStrategy = require("./NetPassport_Strategy");
+const env = require("./config.json");
 
 class NetPassport {
   constructor() {
     this.authenticate = this.authenticate.bind(this);
     this.HAS_INITIATED = false;
-    this.URL = process.env.GENERATE_KEYS;
+    this.URL = env.AUTHORIZATION_URL;
   }
 
   authenticate(privateKey, message) {
