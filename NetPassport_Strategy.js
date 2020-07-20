@@ -42,10 +42,9 @@ var util = require("util"),
 function Strategy(options, verify) {
   options = options || {};
   options.authorizationURL =
-    options.authorizationURL || "https://dev.netpassport.io/oauth/authorize";
-  options.tokenURL =
-    options.tokenURL || "https://dev.netpassport.io/oauth/token";
-  this.profileURL = "https://dev.netpassport.io/oauth/users/profile";
+    options.authorizationURL || process.env.AUTHORIZATION_URL;
+  options.tokenURL = options.tokenURL || process.env.TOKEN_URL;
+  this.profileURL = process.env.PROFILE_URL;
 
   OAuth2Strategy.call(this, options, verify);
   this.name = "net-passport";
