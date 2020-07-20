@@ -14,12 +14,12 @@ $ npm install net-passport
 ## Usage
 
 ```javascript
-const { NetPassport } = require("net-passport");
+const { netPassport } = require("net-passport");
 
 // Just register into netpassport.io and manage your authenticated users for free.
 
 // Create an object with the relevant parameters
-const params = {
+const message = {
   netPassportID: 112233, // **required** your NetPassport id
   initURI: "/", // **required** your base auth path
   redirectUri: "/auth/callback", // **required** callback auth path so NetPassport could recieve authentication callback
@@ -54,7 +54,7 @@ const pk = {
 
 
 // Use NetPassport in a top level middleware
-app.use(NetPassport.authenticate(params, pk));
+app.use(netPassport.authenticate(pk, message));
 
 // Define success and failed routs
 app.get("/success", (req, res) => {
@@ -64,6 +64,22 @@ app.get("/success", (req, res) => {
 app.get("/failed", (req, res) => {
   res.send(`Failed authentication`);
 });
+```
+
+## Server to server authentication
+
+#### Sign data
+
+```javascript
+// Pass in two parameters that includes private key or path to your private key and your object message (as mentioned above)
+netPassport.sign(pk, message)
+```
+
+#### Verify data
+
+```javascript
+// Pass in two parameters that includes your original object message and the hashed signature of the message
+netPassport.verify(message, signature)
 ```
 
 ## License

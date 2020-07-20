@@ -1,11 +1,11 @@
 const axios = require("axios").default;
-const { sign } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const env = require("./config.json");
 
 class Auth {
   constructor() {
-    this.signUrl = env.SIGN_URL;
-    this.verifySigUrl = env.VERIFY_SIG;
+    this._signUrl = env.SIGN_URL;
+    this._verifySigUrl = env.VERIFY_SIG;
   }
 
   sign(message, privateKey) {
@@ -14,7 +14,7 @@ class Auth {
       privateKey = require("fs").readFileSync(path, "utf-8");
     }
     try {
-      const signature = sign(message, privateKey, {
+      const signature = jwt.sign(message, privateKey, {
         algorithm: "PS256",
       });
       return signature;
@@ -25,7 +25,7 @@ class Auth {
 
   async verify(message, signature) {
     try {
-      const { data } = await axios.post(this.verifySigUrl, {
+      const { data } = await axios.post(this._verifySigUrl, {
         message,
         signature,
       });

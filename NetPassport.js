@@ -8,17 +8,19 @@ const env = require("./config.json");
 class NetPassport {
   constructor() {
     this.authenticate = this.authenticate.bind(this);
-    this.HAS_INITIATED = false;
-    this.URL = env.GENERATE_KEYS;
+    this._HAS_INITIATED = false;
+    this._URL = env.GENERATE_KEYS;
+    this.sign = auth.sign;
+    this.verify = auth.verify;
   }
 
   authenticate(privateKey, message) {
     return async (req, res, next) => {
-      if (!this.HAS_INITIATED) {
+      if (!this._HAS_INITIATED) {
         this.message = message;
         NetPassport._getFullURI(req, this.message);
-        this.signature = auth.sign(this.message, privateKey);
-        this.HAS_INITIATED = true;
+        this.signature = this.sign(this.message, privateKey);
+        this._HAS_INITIATED = true;
       }
       await this.run(req, res, next);
     };
@@ -40,7 +42,7 @@ class NetPassport {
 
   async getOAuth2Keys() {
     try {
-      const { data } = await axios.post(this.URL, {
+      const { data } = await axios.post(this._URL, {
         message: this.message,
         signature: this.signature,
       });
@@ -141,4 +143,3 @@ function deserializeUser() {
 }
 
 module.exports.netPassport = new NetPassport();
-module.exports.NetPassportStrategy = NetPassportStrategy;
