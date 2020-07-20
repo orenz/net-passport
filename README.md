@@ -66,6 +66,12 @@ app.get("/failed", (req, res) => {
 #### Sign data
 
 ```javascript
+// Initiate your message object
+const message = {
+  netPassportID: 112233,
+  myData: "Hi there"
+};
+
 // Pass in two parameters that includes private key or path to your private key and your object message (as mentioned above)
 const signature = netPassport.sign(pk, message);
 ```
