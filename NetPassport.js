@@ -9,7 +9,7 @@ class NetPassport {
   constructor() {
     this.authenticate = this.authenticate.bind(this);
     this.HAS_INITIATED = false;
-    this.URL = env.AUTHORIZATION_URL;
+    this.URL = env.GENERATE_KEYS;
   }
 
   authenticate(privateKey, message) {
