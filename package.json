@@ -1,6 +1,6 @@
 {
   "name": "net-passport",
-  "version": "1.0.24",
+  "version": "1.0.241",
   "description": "Easily create OAuth2 keys in one line of code",
   "main": "NetPassport.js",
   "keywords": [

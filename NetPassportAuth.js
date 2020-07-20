@@ -9,9 +9,10 @@ class Auth {
   }
 
   sign(message, privateKey) {
-    if (typeof privateKey === "object") {
-      const path = privateKey.privateKeyLocation;
-      privateKey = require("fs").readFileSync(path, "utf-8");
+    if (typeof privateKey !== "string")
+      throw new Error("Private key must be of type string");
+    if (privateKey.indexOf("-----BEGIN PRIVATE KEY-----") === -1) {
+      privateKey = require("fs").readFileSync(privateKey, "utf-8");
     }
     try {
       const signature = jwt.sign(message, privateKey, {

@@ -33,26 +33,21 @@ const message = {
 ### Add your private key
 
 ```javascript
-// You can pass an object with the private key file
-const pk = {
-  privateKey: fs.readFileSync(pathToPrivateKey, { encoding: "utf-8" }), // client privateKey file encoded in utf-8
-};
+// Pass in the .pem file or a pth to the file
+const pk = fs.readFileSync(
+  path.join(__dirname, "lib", "keys", "privatekey.pem"),
+  "utf-8"
+);
 
 // OR
 
-// Pass an object with the path to your private key
-const pk = {
-  privateKeyPath: path.join(__dirname, ssl, "myPrivateKey.pem"), // optional, instead of privateKey as file, send the path to your pk
-};
-
+const pk = path.join(__dirname, "lib", "keys", "privatekey.pem")
 ```
 
 
 ### Define middlewares
 
 ```javascript
-
-
 // Use NetPassport in a top level middleware
 app.use(netPassport.authenticate(pk, message));
 
