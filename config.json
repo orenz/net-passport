@@ -1,0 +1,8 @@
+{
+  "GENERATE_KEYS": "https://netpassport.io/generateAppKeys/serverGen",
+  "VERIFY_SIG": "https://netpassport.io/signature/verify",
+  "SIGN_URL": "https://netpassport.io/signature/sign",
+  "AUTHORIZATION_URL": "https://netpassport.io/oauth/authorize",
+  "TOKEN_URL": "https://netpassport.io/oauth/token",
+  "PROFILE_URL": "https://netpassport.io/oauth/users/profile"
+}
