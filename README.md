@@ -45,6 +45,13 @@ const pk = {
   privateKeyPath: path.join(__dirname, ssl, "myPrivateKey.pem"), // optional, instead of privateKey as file, send the path to your pk
 };
 
+```
+
+
+### Define middlewares
+```javascript
+
+
 // Use NetPassport in a top level middleware
 app.use(NetPassport.authenticate(params, pk));
 
