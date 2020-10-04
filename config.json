@@ -1,5 +1,5 @@
 {
-  "GENERATE_KEYS": "https://dev.netpassport.io/generateAppKeys/serverGen",
+  "GENERATE_KEYS": "https://dev.netpassport.io/api/generateAppKeys/serverGen",
   "VERIFY_SIG": "https://dev.netpassport.io/signature/verify",
   "SIGN_URL": "https://dev.netpassport.io/signature/sign",
   "AUTHORIZATION_URL": "https://dev.netpassport.io/oauth/authorize",

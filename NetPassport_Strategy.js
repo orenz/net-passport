@@ -77,19 +77,17 @@ Strategy.prototype.userProfile = function (accessToken, done) {
 
     try {
       const json = JSON.parse(body);
-      const profile = { provider: this.name };
-      profile.id = json.id;
-      if (json.full_name) {
-        profile.full_name = json.full_name;
-        profile.name = {
-          familyName: json.last_name,
-          givenName: json.first_name,
-        };
-      }
-      if (json.username) {
-        profile.username = json.username;
-      }
-      profile.photo = json.photo;
+      const profile = json.map((rec) => ({
+        provider: this.name,
+        id: rec.id,
+        name: {
+          familyName: rec.last_name,
+          givenName: rec.first_name,
+        },
+        username: rec.username,
+        identifier: rec.identifier,
+        photo: rec.photo,
+      }));
       profile._raw = body;
       profile._json = json;
 
