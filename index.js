@@ -75,7 +75,7 @@ class NetPassportAuth {
   nextStep(req) {
     if (
       req.path === this.message.relativePath.initUri ||
-      `${this.message.relativePath.initUri}/`
+      req.path === `${this.message.relativePath.initUri}/`
     ) {
       return "INIT_AUTH";
     }
