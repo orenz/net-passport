@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 const passport = require("passport");
 const NetPassportStrategy = require("./NetPassport_Strategy");
-const sig = require("./NetPassportSig");
+const signer = require("./NetPassportSig");
 const { validateParams } = require("./utils");
 
 const env = require("./config.json");
@@ -49,13 +49,13 @@ class NetPassportAuth {
   constructor(privateKey, message) {
     this.privateKey = privateKey;
     this.message = message;
-    this.verify = sig.verify;
+    this.verify = signer.verify;
     this.makeAuthentication = this.makeAuthentication.bind(this);
     this._URL = env.GENERATE_KEYS;
   }
 
   sign() {
-    this.signature = sig.sign(this.message, this.privateKey);
+    this.signature = signer.sign(this.message, this.privateKey);
   }
 
   async getOAuth2Keys() {
@@ -155,4 +155,4 @@ const authenticate = (privateKey, message) => {
   };
 };
 
-module.exports = { authenticate };
+module.exports = { authenticate, signer };

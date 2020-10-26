@@ -14,18 +14,19 @@ $ npm install net-passport
 ## Usage
 
 ```javascript
-const { netPassport } = require("net-passport");
+const { authenticate, signer } = require("net-passport");
 
 // Just register into netpassport.io and manage your authenticated users for free.
 
 // Create an object with the relevant parameters
 const message = {
-  netPassportID: 112233, // **required** your NetPassport id
-  initURI: "/", // **required** your base auth path
+  netPassportID: "112233", // **required** your NetPassport id (String type must be provided)
+  initUri: "/auth", // **required** your base auth path
   redirectUri: "/auth/callback", // **required** callback auth path so NetPassport could recieve authentication callback
   successRedirect: "/success", // **required** a success relative path in case user authenticated successfully
   failureRedirect: "/failed", // ***required** a failed relative path for failed authentication
-  appName: "myAwesomeApp", // Optional - application name 
+  appName: "myAwesomeApp", // Optional - application name
+  algorithm: "PS256" // Optional - signer algorithm. default to RS256
 };
 
 ```
@@ -49,11 +50,11 @@ const pk = path.join(__dirname, "lib", "keys", "privatekey.pem")
 
 ```javascript
 // Use NetPassport in a top level middleware
-app.use(netPassport.authenticate(pk, message));
+app.use(authenticate(pk, message));
 
 // Define success and failed routs
 app.get("/success", (req, res) => {
-  res.send(`Hello ${req.session.passport.user.full_name}`);
+  res.send(`Hello ${req.session.passport.user[0].identifier}`);
 });
 
 app.get("/failed", (req, res) => {
@@ -68,19 +69,19 @@ app.get("/failed", (req, res) => {
 ```javascript
 // Initiate your message object
 const message = {
-  netPassportID: 112233,
+  netPassportID: "112233",
   myData: "Hi there"
 };
 
 // Pass in two parameters that includes your object message (as mentioned above) and a private key or path to your private key
-const signature = netPassport.sign(message, pk);
+const signature = signer.sign(message, pk);
 ```
 
 #### Verify data
 
 ```javascript
 // Pass in two parameters that includes your original object message and the hashed signature of the message
-netPassport.verify(message, signature)
+signer.verify(message, signature)
   .then(verifiedMessage => verifiedMessage);
 ```
 
