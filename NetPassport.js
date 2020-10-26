@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const axios = require("axios").default;
 const passport = require("passport");
-const auth = require("./NetPassportAuth");
+const auth = require("./NetPassportSig");
 const NetPassportStrategy = require("./NetPassport_Strategy");
 const env = require("./config.json");
 
