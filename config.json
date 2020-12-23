@@ -1,8 +1,8 @@
 {
-  "GENERATE_KEYS": "https://dev.netpassport.io/api/generateAppKeys/serverGen",
-  "VERIFY_SIG": "https://dev.netpassport.io/signature/verify",
-  "SIGN_URL": "https://dev.netpassport.io/signature/sign",
-  "AUTHORIZATION_URL": "https://dev.netpassport.io/oauth/authorize",
-  "TOKEN_URL": "https://dev.netpassport.io/oauth/token",
-  "PROFILE_URL": "https://dev.netpassport.io/oauth/users/profile"
+  "GENERATE_KEYS": "https://netpassport.io/api/generateAppKeys/serverGen",
+  "VERIFY_SIG": "https://netpassport.io/signature/verify",
+  "SIGN_URL": "https://netpassport.io/signature/sign",
+  "AUTHORIZATION_URL": "https://netpassport.io/oauth/authorize",
+  "TOKEN_URL": "https://netpassport.io/oauth/token",
+  "PROFILE_URL": "https://netpassport.io/oauth/users/profile"
 }
