@@ -67,13 +67,14 @@ class NetPassportAuth {
       return data;
     } catch (error) {
       throw new Error(
-        error.response ? error.response.statusText : error.message
+        error.response ? error.response.data.message : error.message
       );
     }
   }
 
   nextStep(req) {
     if (
+      this.options && this.options.initUri ||
       req.path === this.message.relativePath.initUri ||
       req.path === `${this.message.relativePath.initUri}/`
     ) {
@@ -121,14 +122,14 @@ class NetPassportAuth {
       redirectUri: message.redirectUri,
     };
 
-    message.initUri = `${req.protocol}://${req.get("host")}${message.initUri}`;
+    message.initUri = message.initUri ? `${req.protocol}://${req.get("host")}${message.initUri}` : null;
     message.redirectUri = `${req.protocol}://${req.get("host")}${
       message.redirectUri
     }`;
   }
 }
 
-const authenticate = (privateKey, message) => {
+const authenticate = (privateKey, message, options) => {
   try {
     validateParams(privateKey, message);
   } catch (error) {
@@ -146,6 +147,7 @@ const authenticate = (privateKey, message) => {
         HAS_INITIATED = true;
       }
       if (netPassportAuth) {
+        netPassportAuth.options = options;
         await netPassportAuth.makeAuthentication(req, res, next);
       }
     } catch (error) {
