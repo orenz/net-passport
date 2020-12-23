@@ -1,6 +1,6 @@
 {
   "name": "net-passport",
-  "version": "2.0.01",
+  "version": "2.0.1",
   "description": "Easily create OAuth2 keys in one line of code",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "author": "Yaron Lerner",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "passport": "^0.4.1",
