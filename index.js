@@ -8,6 +8,7 @@ const env = require("./config.json");
 
 let HAS_INITIATED = false;
 let netPassportAuth;
+let ERR = false;
 
 function passportMiddleware(keys) {
   passport.use(getNetPassStrategy(keys));
@@ -66,15 +67,18 @@ class NetPassportAuth {
       });
       return data;
     } catch (error) {
-      throw new Error(
+      console.log(
+        "error getting oauth2 keys ",
         error.response ? error.response.data.message : error.message
       );
+      ERR = true;
+      return;
     }
   }
 
   nextStep(req) {
     if (
-      this.options && this.options.initUri ||
+      (this.options && this.options.initUri) ||
       req.path === this.message.relativePath.initUri ||
       req.path === `${this.message.relativePath.initUri}/`
     ) {
@@ -102,6 +106,9 @@ class NetPassportAuth {
   }
 
   async makeAuthentication(req, res, next) {
+    if (ERR) {
+      return next();
+    }
     if (!this.oauth2Keys) {
       this.oauth2Keys = await this.getOAuth2Keys();
     }
@@ -122,7 +129,9 @@ class NetPassportAuth {
       redirectUri: message.redirectUri,
     };
 
-    message.initUri = message.initUri ? `${req.protocol}://${req.get("host")}${message.initUri}` : null;
+    message.initUri = message.initUri
+      ? `${req.protocol}://${req.get("host")}${message.initUri}`
+      : null;
     message.redirectUri = `${req.protocol}://${req.get("host")}${
       message.redirectUri
     }`;
@@ -134,8 +143,8 @@ const authenticate = (privateKey, message, options) => {
     validateParams(privateKey, message);
   } catch (error) {
     return (req, res, next) => {
-      console.log(error);
-      next(error.message);
+      console.log("Error authenticate ", error);
+      next();
     };
   }
   return async (req, res, next) => {
@@ -152,7 +161,7 @@ const authenticate = (privateKey, message, options) => {
       }
     } catch (error) {
       console.log("Error in NetPassport middleware: ", error);
-      next(error);
+      next();
     }
   };
 };
