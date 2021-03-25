@@ -1,3 +1,4 @@
+// const https = require("https");
 const { default: axios } = require("axios");
 const passport = require("passport");
 const NetPassportStrategy = require("./NetPassport_Strategy");
@@ -5,6 +6,7 @@ const signer = require("./NetPassportSig");
 const { validateParams } = require("./utils");
 
 const env = require("./config.json");
+// const agent = new https.Agent({ rejectUnauthorized: false });
 
 let HAS_INITIATED = false;
 let netPassportAuth;
@@ -32,6 +34,9 @@ function getNetPassStrategy({ client_id, client_secret, redirect_uri }) {
       return done(null, profile);
     }
   );
+  // gStrategy._oauth2.setAgent(new https.Agent({ rejectUnauthorized: false }));
+  // passport.use(gStrategy);
+  // return gStrategy;
 }
 
 function serializeUser() {
@@ -61,10 +66,14 @@ class NetPassportAuth {
 
   async getOAuth2Keys() {
     try {
-      const { data } = await axios.post(this._URL, {
-        message: this.message,
-        signature: this.signature,
-      });
+      const { data } = await axios.post(
+        this._URL,
+        {
+          message: this.message,
+          signature: this.signature,
+        },
+        // { httpsAgent: agent }
+      );
       return data;
     } catch (error) {
       console.log(
@@ -93,7 +102,9 @@ class NetPassportAuth {
   passportAuth(action) {
     if (action === "INIT_AUTH") {
       return (req, res, next) =>
-        passport.authenticate("net-passport")(req, res, next);
+        passport.authenticate("net-passport", {
+          userProperty: this.options.appName || this.message.appName
+        })(req, res, next);
     }
     if (action === "CALLBACK_AUTH") {
       return (req, res, next) =>
@@ -132,9 +143,7 @@ class NetPassportAuth {
     message.initUri = message.initUri
       ? `${req.protocol}://${req.get("host")}${message.initUri}`
       : null;
-    message.redirectUri = `${req.protocol}://${req.get("host")}${
-      message.redirectUri
-    }`;
+    message.redirectUri = `${req.protocol}://${req.get("host")}${message.redirectUri}`;
   }
 }
 

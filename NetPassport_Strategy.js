@@ -114,6 +114,9 @@ Strategy.prototype.authorizationParams = function (options) {
   // if (options.state) {
   // }
   params["state"] = options.state || Math.random().toString(36).substring(7);
+  if (options.userProperty) {
+    params["appName"] = options.userProperty;
+  }
 
   return params;
 };
