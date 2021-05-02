@@ -109,5 +109,5 @@ signer.verify(message, signature).then((verifiedMessage) => verifiedMessage);
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-[netpassport]: netpassport.io/signup
-[netpassporthome]: netpassport.io/home
+[netpassport]: https://netpassport.io/signup
+[netpassporthome]: https://netpassport.io/home
