@@ -1,12 +1,8 @@
 {
   "name": "net-passport",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "Easily create OAuth2 keys in one line of code",
   "main": "index.js",
-  "scripts": {
-    "dev": "parcel index.ts",
-    "build": "parcel build index.ts"
-  },
   "keywords": [
     "OAuth2",
     "passport",

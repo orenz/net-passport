@@ -4,5 +4,7 @@
   "SIGN_URL": "https://dev.netpassport.io/signature/sign",
   "AUTHORIZATION_URL": "https://dev.netpassport.io/oauth/authorize",
   "TOKEN_URL": "https://dev.netpassport.io/oauth/token",
-  "PROFILE_URL": "https://dev.netpassport.io/oauth/users/profile"
+  "PROFILE_URL": "https://dev.netpassport.io/oauth/users/profile",
+  "SUCCESS_PATH": "/net-passport/auth/success",
+  "FAILED_PATH": "/net-passport/auth/failed"
 }
