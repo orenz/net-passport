@@ -1,4 +1,5 @@
 // const https = require("https");
+const { URL } = require("url");
 const { default: axios } = require("axios");
 const passport = require("passport");
 const NetPassportStrategy = require("./NetPassport_Strategy");
@@ -54,10 +55,15 @@ function deserializeUser() {
 class NetPassportAuth {
   constructor(privateKey, message) {
     this.privateKey = privateKey;
-    this.message = message;
+    this.message = {
+      ...message,
+      // successRedirect: env.SUCCESS_PATH,
+      // failureRedirect: env.FAILED_PATH,
+    };
     this.verify = signer.verify;
     this.makeAuthentication = this.makeAuthentication.bind(this);
     this._URL = env.GENERATE_KEYS;
+    NetPassportAuth.getFullURI(this.message);
   }
 
   sign() {
@@ -71,7 +77,7 @@ class NetPassportAuth {
         {
           message: this.message,
           signature: this.signature,
-        },
+        }
         // { httpsAgent: agent }
       );
       return data;
@@ -88,12 +94,12 @@ class NetPassportAuth {
   nextStep(req) {
     if (
       (this.options && this.options.initUri) ||
-      req.path === this.message.relativePath.initUri ||
-      req.path === `${this.message.relativePath.initUri}/`
+      req.path === this.message.relativePath.init ||
+      req.path === `${this.message.relativePath.init}/`
     ) {
       return "INIT_AUTH";
     }
-    if (req.path === this.message.relativePath.redirectUri) {
+    if (req.path === this.message.relativePath.callback) {
       return "CALLBACK_AUTH";
     }
     return "NEXT";
@@ -103,7 +109,7 @@ class NetPassportAuth {
     if (action === "INIT_AUTH") {
       return (req, res, next) =>
         passport.authenticate("net-passport", {
-          userProperty: this.options.appName || this.message.appName
+          userProperty: this.options.appName || this.message.appName,
         })(req, res, next);
     }
     if (action === "CALLBACK_AUTH") {
@@ -129,25 +135,36 @@ class NetPassportAuth {
     });
   }
 
-  static getFullURI(req, message) {
+  static getFullURI(message) {
     message.redirectUri =
       message.redirectUri.slice(-1) === "/"
         ? message.redirectUri
         : `${message.redirectUri}/`;
 
+    message.initUri = message.initUri || "";
     message.relativePath = {
-      initUri: message.initUri,
-      redirectUri: message.redirectUri,
+      init: message.initUri,
+      callback: message.redirectUri,
     };
-
-    message.initUri = message.initUri
-      ? `${req.protocol}://${req.get("host")}${message.initUri}`
-      : null;
-    message.redirectUri = `${req.protocol}://${req.get("host")}${message.redirectUri}`;
+    try {
+      const url = new URL(message.domain);
+      const baseUrl = url.protocol.includes("http")
+        ? message.domain
+        : `http://${message.domain}`;
+      message.initUri = `${baseUrl}${message.initUri}`;
+      message.redirectUri = `${baseUrl}${message.redirectUri}`;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Bad url provided in message.domain");
+    }
+    // message.initUri = message.initUri
+    //   ? `${req.protocol}://${req.get("host")}${message.initUri}`
+    //   : null;
+    // message.redirectUri = `${req.protocol}://${req.get("host")}${message.redirectUri}`;
   }
 }
 
-const authenticate = (privateKey, message, options) => {
+const authenticate = (privateKey = "", message = {}, options = {}) => {
   try {
     validateParams(privateKey, message);
   } catch (error) {
@@ -160,7 +177,6 @@ const authenticate = (privateKey, message, options) => {
     try {
       if (!HAS_INITIATED) {
         netPassportAuth = new NetPassportAuth(privateKey, message);
-        NetPassportAuth.getFullURI(req, message);
         netPassportAuth.sign();
         HAS_INITIATED = true;
       }

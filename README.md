@@ -38,12 +38,12 @@ you could click the "Copy" button to copy the id and paste it inside your code.
 // Create an object with the relevant parameters
 const message = {
   netPassportID: "112233", // **required** your NetPassport id (String type must be provided)
+  domain: "http://localhost:5000", // **required** your domain
   initUri: "/auth", // Optional - your base auth path
   redirectUri: "/auth/callback", // **required** callback auth path so NetPassport could recieve authentication callback
   successRedirect: "/success", // **required** a success relative path in case user authenticated successfully
   failureRedirect: "/failed", // ***required** a failed relative path for failed authentication
-  appName: "myAwesomeApp", // Optional - application name
-  algorithm: "RS256", // Optional - signer algorithm. default to RS256. If you wish to use with your key pair make sure to add this property
+  appName: "myAwesomeApp" // Optional - application name
 };
 ```
 
