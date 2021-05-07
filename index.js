@@ -1,5 +1,5 @@
 // const https = require("https");
-const { URL } = require("url");
+const Url = require("url-parse");
 const { default: axios } = require("axios");
 const passport = require("passport");
 const NetPassportStrategy = require("./NetPassport_Strategy");
@@ -63,7 +63,6 @@ class NetPassportAuth {
     this.verify = signer.verify;
     this.makeAuthentication = this.makeAuthentication.bind(this);
     this._URL = env.GENERATE_KEYS;
-    NetPassportAuth.getFullURI(this.message);
   }
 
   sign() {
@@ -127,6 +126,7 @@ class NetPassportAuth {
       return next();
     }
     if (!this.oauth2Keys) {
+      NetPassportAuth.getFullURI(req, this.message);
       this.oauth2Keys = await this.getOAuth2Keys();
     }
     const action = this.nextStep(req);
@@ -135,24 +135,30 @@ class NetPassportAuth {
     });
   }
 
-  static getFullURI(message) {
+  static getFullURI(req, message) {
+    if (message.initUri && message.initUri.slice(-1) === "/") {
+      message.initUri = message.initUri.slice(-1);
+    }
     message.redirectUri =
       message.redirectUri.slice(-1) === "/"
         ? message.redirectUri
         : `${message.redirectUri}/`;
 
-    message.initUri = message.initUri || "";
+    message.initUri = message.initUri || null;
     message.relativePath = {
       init: message.initUri,
       callback: message.redirectUri,
     };
     try {
-      const url = new URL(message.domain);
-      const baseUrl = url.protocol.includes("http")
+      const url = new Url(message.domain);
+      const href = url.protocol.includes("http")
         ? message.domain
         : `http://${message.domain}`;
-      message.initUri = `${baseUrl}${message.initUri}`;
-      message.redirectUri = `${baseUrl}${message.redirectUri}`;
+
+      message.initUri = `${href}${req.baseUrl}${message.initUri}`;
+      message.redirectUri = `${href}${req.baseUrl}${message.redirectUri}`;
+      message.successRedirect = `${req.baseUrl}${message.successRedirect}`;
+      message.failureRedirect = `${req.baseUrl}${message.failureRedirect}`;
     } catch (error) {
       console.log(error);
       throw new Error("Bad url provided in message.domain");
