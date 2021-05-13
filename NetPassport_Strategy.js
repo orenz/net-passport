@@ -117,6 +117,9 @@ Strategy.prototype.authorizationParams = function (options) {
   if (options.userProperty) {
     params["appName"] = options.userProperty;
   }
+  if (options.provider) {
+    params["provider"] = options.provider;
+  }
 
   return params;
 };

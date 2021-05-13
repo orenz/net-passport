@@ -1,6 +1,6 @@
 {
   "name": "net-passport",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Easily create OAuth2 keys in one line of code",
   "main": "index.js",
   "keywords": [
@@ -22,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "passport": "^0.4.1",
     "passport-oauth2": "^1.5.0",
-    "url-parse": "^1.5.1"
+    "url-parse": "^1.5.1",
+    "uuid": "^8.3.2"
   }
 }

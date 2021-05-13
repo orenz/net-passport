@@ -43,7 +43,8 @@ const message = {
   redirectUri: "/auth/callback", // **required** callback auth path so NetPassport could recieve authentication callback
   successRedirect: "/success", // **required** a success relative path in case user authenticated successfully
   failureRedirect: "/failed", // ***required** a failed relative path for failed authentication
-  appName: "myAwesomeApp" // Optional - application name
+  appName: "myAwesomeApp", // **required** application name
+  provider: "google", // **optional** pass a provider name from the list of providers ("google" / "facebook" / "github") to skip NetPassport sign in screen
 };
 ```
 
