@@ -6,7 +6,6 @@ const validateParams = (
   privateKey = requiredParamsValidator("privateKey"),
   {
     domain = requiredParamsValidator("domain"),
-    redirectUri = requiredParamsValidator("redirectUri"),
     successRedirect = requiredParamsValidator("successRedirect"),
     failureRedirect = requiredParamsValidator("failureRedirect"),
   }

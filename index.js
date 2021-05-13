@@ -1,6 +1,7 @@
 // const https = require("https");
-const Url = require("url-parse");
 const { default: axios } = require("axios");
+const Url = require("url-parse");
+const { v4 } = require("uuid");
 const passport = require("passport");
 const NetPassportStrategy = require("./NetPassport_Strategy");
 const signer = require("./NetPassportSig");
@@ -108,6 +109,7 @@ class NetPassportAuth {
     if (action === "INIT_AUTH") {
       return (req, res, next) =>
         passport.authenticate("net-passport", {
+          provider: this.message.provider,
           userProperty: this.options.appName || this.message.appName,
         })(req, res, next);
     }
@@ -136,15 +138,13 @@ class NetPassportAuth {
   }
 
   static getFullURI(req, message) {
+    // message.initUri = message.initUri || null;
     if (message.initUri && message.initUri.slice(-1) === "/") {
       message.initUri = message.initUri.slice(-1);
     }
-    message.redirectUri =
-      message.redirectUri.slice(-1) === "/"
-        ? message.redirectUri
-        : `${message.redirectUri}/`;
 
-    message.initUri = message.initUri || null;
+    message.redirectUri = `/netpassport-callback/${v4()}/`;
+
     message.relativePath = {
       init: message.initUri,
       callback: message.redirectUri,
@@ -163,10 +163,6 @@ class NetPassportAuth {
       console.log(error);
       throw new Error("Bad url provided in message.domain");
     }
-    // message.initUri = message.initUri
-    //   ? `${req.protocol}://${req.get("host")}${message.initUri}`
-    //   : null;
-    // message.redirectUri = `${req.protocol}://${req.get("host")}${message.redirectUri}`;
   }
 }
 
