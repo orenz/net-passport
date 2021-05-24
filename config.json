@@ -5,6 +5,5 @@
   "AUTHORIZATION_URL": "https://dev.netpassport.io/oauth/authorize",
   "TOKEN_URL": "https://dev.netpassport.io/oauth/token",
   "PROFILE_URL": "https://dev.netpassport.io/oauth/users/profile",
-  "SUCCESS_PATH": "/net-passport/auth/success",
-  "FAILED_PATH": "/net-passport/auth/failed"
+  "UUID_CALLBACK_URL": "/np/callback/d73d809d-7c36-45a5-bedf-b7c59ffefc42"
 }
