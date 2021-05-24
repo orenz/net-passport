@@ -25,7 +25,7 @@ function passportMiddleware(keys) {
 }
 
 function getNetPassStrategy({ client_id, client_secret, redirect_uri }) {
-  new NetPassportStrategy(
+  return new NetPassportStrategy(
     {
       clientID: client_id,
       clientSecret: client_secret,
