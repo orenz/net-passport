@@ -1,4 +1,4 @@
-const https = require("https");
+// const https = require("https");
 const { default: axios } = require("axios");
 const Url = require("url-parse");
 const passport = require("passport");
@@ -7,7 +7,7 @@ const signer = require("./NetPassportSig");
 const { validateParams } = require("./utils");
 
 const env = require("./config.json");
-const agent = new https.Agent({ rejectUnauthorized: false });
+// const agent = new https.Agent({ rejectUnauthorized: false });
 
 let HAS_INITIATED = false;
 let netPassportAuth;
@@ -25,7 +25,7 @@ function passportMiddleware(keys) {
 }
 
 function getNetPassStrategy({ client_id, client_secret, redirect_uri }) {
-  let gStrategy = new NetPassportStrategy(
+  new NetPassportStrategy(
     {
       clientID: client_id,
       clientSecret: client_secret,
@@ -35,9 +35,9 @@ function getNetPassStrategy({ client_id, client_secret, redirect_uri }) {
       return done(null, profile);
     }
   );
-  gStrategy._oauth2.setAgent(new https.Agent({ rejectUnauthorized: false }));
-  passport.use(gStrategy);
-  return gStrategy;
+  // gStrategy._oauth2.setAgent(new https.Agent({ rejectUnauthorized: false }));
+  // passport.use(gStrategy);
+  // return gStrategy;
 }
 
 function serializeUser() {
@@ -76,8 +76,8 @@ class NetPassportAuth {
         {
           message: this.message,
           signature: this.signature,
-        },
-        { httpsAgent: agent }
+        }
+        // { httpsAgent: agent }
       );
       return data;
     } catch (error) {
