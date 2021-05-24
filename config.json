@@ -4,5 +4,6 @@
   "SIGN_URL": "https://netpassport.io/signature/sign",
   "AUTHORIZATION_URL": "https://netpassport.io/oauth/authorize",
   "TOKEN_URL": "https://netpassport.io/oauth/token",
-  "PROFILE_URL": "https://netpassport.io/oauth/users/profile"
+  "PROFILE_URL": "https://netpassport.io/oauth/users/profile",
+  "UUID_CALLBACK_URL": "/np/callback/d73d809d-7c36-45a5-bedf-b7c59ffefc42"
 }

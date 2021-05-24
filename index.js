@@ -1,7 +1,6 @@
 // const https = require("https");
 const { default: axios } = require("axios");
 const Url = require("url-parse");
-const { v4 } = require("uuid");
 const passport = require("passport");
 const NetPassportStrategy = require("./NetPassport_Strategy");
 const signer = require("./NetPassportSig");
@@ -26,7 +25,7 @@ function passportMiddleware(keys) {
 }
 
 function getNetPassStrategy({ client_id, client_secret, redirect_uri }) {
-  return new NetPassportStrategy(
+  new NetPassportStrategy(
     {
       clientID: client_id,
       clientSecret: client_secret,
@@ -143,7 +142,7 @@ class NetPassportAuth {
       message.initUri = message.initUri.slice(-1);
     }
 
-    message.redirectUri = `/netpassport-callback/${v4()}/`;
+    message.redirectUri = `/netpassport-callback/${env.UUID_CALLBACK_URL}/`;
 
     message.relativePath = {
       init: message.initUri,
@@ -155,7 +154,9 @@ class NetPassportAuth {
         ? message.domain
         : `http://${message.domain}`;
 
-      message.initUri = `${href}${req.baseUrl}${message.initUri}`;
+      message.initUri = message.initUri
+        ? `${href}${req.baseUrl}${message.initUri}`
+        : null;
       message.redirectUri = `${href}${req.baseUrl}${message.redirectUri}`;
       message.successRedirect = `${req.baseUrl}${message.successRedirect}`;
       message.failureRedirect = `${req.baseUrl}${message.failureRedirect}`;
