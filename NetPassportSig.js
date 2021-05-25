@@ -1,3 +1,4 @@
+const { createHash } = require("crypto");
 const { default: axios } = require("axios");
 const jwt = require("jsonwebtoken");
 const env = require("./config.json");
@@ -9,6 +10,10 @@ class Signature {
     this.verify = this.verify.bind(this);
   }
 
+  static md5(message) {
+    return createHash("md5").update(JSON.stringify(message)).digest("hex");
+  }
+
   sign(message, privateKey) {
     if (typeof privateKey !== "string")
       throw new Error("Private key must be of type string");
@@ -16,7 +21,8 @@ class Signature {
       privateKey = require("fs").readFileSync(privateKey, "utf-8");
     }
     try {
-      const signature = jwt.sign(message, privateKey, {
+      const hash = Signature.md5(message);
+      const signature = jwt.sign(hash, privateKey, {
         algorithm: "RS256",
       });
       return signature;
