@@ -178,7 +178,8 @@ const authenticate = (privateKey = "", message = {}, options = {}) => {
       }
     } catch (error) {
       console.log("Error in NetPassport middleware: ", error);
-      next({ origin: "NetPassport", message: error });
+      req.netPassportInfo = { status: "error", message: error };
+      next();
     }
   };
 };
