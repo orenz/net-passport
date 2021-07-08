@@ -27,7 +27,7 @@ class Signature {
       });
       return signature;
     } catch (error) {
-      console.error(error.message);
+      return Promise.reject({ message: error.message });
     }
   }
 
@@ -39,7 +39,10 @@ class Signature {
       });
       return data;
     } catch (error) {
-      console.error(error.message);
+      return Promise.reject({
+        message: error.response.data.message,
+        statusCode: error.response.data.statusCode,
+      });
     }
   }
 }
